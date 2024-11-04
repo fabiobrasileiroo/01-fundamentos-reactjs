@@ -1,46 +1,67 @@
-import { Avatar } from './Avatar'
-import { Comment } from './Comment'
-import styles from './Post.module.css'
-export function Post() {
+import { format, formatDistanceToNow } from 'date-fns';
+import ptBr from 'date-fns/locale/pt-BR';
+import { Avatar } from './Avatar';
+import { Comment } from './Comment';
+import styles from './Post.module.css';
+import { useState } from 'react';
+
+export function Post({ author, content, publishedAt }) {
+  const [comments, setComments] = useState([1, 2]);
+  const publishedDateFormatted = format(publishedAt, "d 'de' LLLL 'às' HH:mm'h'", {
+    locale: ptBr,
+  });
+
+  const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+    locale: ptBr,
+    addSuffix: true,
+  });
+
+  function handleCreateNewComment(event) { // Corrigido aqui
+    event.preventDefault();
+    console.log('oi');
+  }
+
   return (
     <article className={styles.post}>
       <header>
         <div className={styles.author}>
-          <Avatar className={styles.avatar} src="https://github.com/fabiobrasileiroo.png" alt="" />
+          <Avatar className={styles.avatar} src={author.avatarUrl} alt="" />
           <div className={styles.authorInfo}>
-            <strong>Fábio Brasieleiro</strong>
-            <span>Full stack Depelover</span>
+            <strong>{author.name}</strong>
+            <span>{author.role}</span>
           </div>
         </div>
-        <time dateTime="2024-05-11 08:13:30">Publicado há 1h</time>
+        <time title={publishedDateFormatted} dateTime={publishedAt.toISOString()}>
+          {publishedDateRelativeToNow}
+        </time> {/* Corrigido aqui */}
       </header>
       <div className={styles.content}>
-        <p>Fala galera</p>
-        <p>Acabei de subir mais um projeto no meu portifolio. É um projeto que fiz no NLW Return, evento</p>
-        <p><a href="">jane.desing/doctorcare</a></p>
+        {content.map((line, index) => {
+          if (line.type === 'paragraph') {
+            return <p key={index}>{line.content}</p>;
+          } else {
+            return <p key={index}><a href="#">{line.content}</a></p>;
+          }
+        })}
         <p>
-          <a href="">#novoprojeto</a> {' '}
-          <a>#nlw</a>{' '}
-          <a>#rocketseat</a>{' '}
+          <a href="">#novoprojeto</a>{' '}
+          <a href="">#nlw</a>{' '}
+          <a href="">#rocketseat</a>{' '}
         </p>
       </div>
 
-      <form className={styles.commentForm}>
+      <form className={styles.commentForm} onSubmit={handleCreateNewComment}>
         <strong>Deixe seu feedback</strong>
-
-        <textarea
-          placeholder='Deixe um comentario'
-        />
+        <textarea placeholder="Deixe um comentario" />
         <footer>
-          <button type='submit'>Publicar</button>
+          <button type="submit">Publicar</button>
         </footer>
       </form>
       <div className={styles.commentList}>
-        <Comment />
-        <Comment />
-        <Comment />
+        {comments.map((comment, index) => (
+          <Comment key={index} />
+        ))}
       </div>
     </article>
-
-  )
+  );
 }

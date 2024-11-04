@@ -4,59 +4,57 @@ import styles from "./App.module.css"
 import { Post } from "./components/Post"
 import { Header } from "./components/Header"
 import { SideBar } from "./components/SideBar"
+
 const posts = [
   {
     id: 1,
     author: {
       avatarUrl: 'https://github.com/fabiobrasileiroo.png',
       name: 'Fábio Brasileiro',
-      role: 'Full stack developer'
+      role: 'Full stack'
     },
     content: [
-      {type: 'paragraph',content: 'Fala galeraaa'},
-      {type: 'paragraph',content: 'Acabei de subir mais um projeto no meu portifolio. É um projeto novo'},
-      {type: 'link',content: 'jane.design/doctorcare'},
+      { type: 'paragraph', content: 'Fala galeraa' },
+      { type: 'paragraph', content: 'Acabei de subir mais um projeto no portifolio 👏' },
+      { type: 'link', content: 'jane.design/doctorcare' },
     ],
-    publicshedAt: new Date('2024-09-30 20:00:00')
+    publishedAt: new Date('2024-05-03 20:00:00'),
   },
   {
     id: 2,
     author: {
-      avatarUrl: 'https://github.com/fabiobrasileiroo.png',
-      name: 'Fábio Brasileiro',
-      role: 'Full stack developer Senior'
+      avatarUrl: 'https://github.com/diego3g.png',
+      name: 'Diego',
+      role: 'CTO @Rocketseat'
     },
     content: [
-      {type: 'paragraph',content: 'Fala galeraaa'},
-      {type: 'paragraph',content: 'Acabei de subir mais um projeto no meu portifolio. É um projeto novo'},
-      {type: 'link',content: 'jane.design/doctorcare'},
+      { type: 'paragraph', content: 'Fala galeraa' },
+      { type: 'paragraph', content: 'Acabei de subir mais um projeto no portifolio. Bem legal' },
+      { type: 'link', content: 'jane.design/doctorcare' },
     ],
-    publicshedAt: new Date('2024-09-30 20:00:00')
+    publishedAt: new Date('2024-11-03 20:00:00'),
   },
-]
+];
+
 function App() {
-
   return (
-    <>
-      <Header/>
+    <div>
+      <Header />
       <div className={styles.wrapper}>
-        <aside>
-          <SideBar/>
-        </aside>
+        <SideBar />
         <main>
-          <Post 
-            author="Fabio Brasileiro"
-            content="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis magni deleniti nesciunt incidunt hic saepe, quae adipisci dicta praesentium eos ea earum veritatis error assumenda minus iste vero ut ipsa!"
-          />
-
-          <Post 
-            author="João"
-            content="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Omnis magni deleniti nesciunt incidunt hic saepe, quae adipisci dicta praesentium eos ea earum veritatis error assumenda minus iste vero ut ipsa!"
-          />
+          {posts.map(post => (
+            <Post
+              key={post.id}
+              author={post.author}
+              content={post.content}
+              publishedAt={post.publishedAt} // Corrigido aqui
+            />
+          ))}
         </main>
       </div>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
